@@ -14,7 +14,7 @@ fn run(line: &mut String, n_lines: usize) {
     let mut next_line: String = line.clone();
 
     println!("{}", line);
-    for i in 0..n_lines {
+    for _i in 0..n_lines {
         next_line = create_next_line(next_line);
         println!("{}", next_line);
     }
@@ -31,7 +31,7 @@ fn create_next_line(line: String) -> String {
     let mut prev_number = line.chars().next().unwrap().clone();
     let mut counter = 1;
 
-    for (i, number) in line.chars().enumerate().skip(1) {
+    for number in line.chars().skip(1) {
         if number == prev_number {
             counter += 1;
         } else {
