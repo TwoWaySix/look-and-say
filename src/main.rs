@@ -1,20 +1,24 @@
-// use std::env;
+use std::env;
 
 fn main() {
-    // let args: Vec<String> = env::args().collect();
-    // let mut first_line: String = String::from("1");
-    // let n_lines: usize = 3;
-    //
-    // run(&mut first_line, n_lines);
-    let a = create_next_line(String::from("221113"));
+    let args: Vec<String> = env::args().collect();
+    let mut first_line: String = args[1].clone();
+    let n_lines: usize = args[2].parse::<usize>().unwrap();
+
+    first_line = clean_input_line(first_line);
+    println!("\nCreating {} lines of look-and-say starting with {}", n_lines, first_line);
+    run(&mut first_line, n_lines);
 }
 
-// fn run(line: &mut String, n_lines: usize) {
-//     let mut next_line: String = line.clone();
-//     for i in 0..n_lines {
-//         next_line = create_next_line(next_line);
-//     }
-// }
+fn run(line: &mut String, n_lines: usize) {
+    let mut next_line: String = line.clone();
+
+    println!("{}", line);
+    for i in 0..n_lines {
+        next_line = create_next_line(next_line);
+        println!("{}", next_line);
+    }
+}
 
 fn clean_input_line(line: String) -> String {
     line.chars()
@@ -27,23 +31,16 @@ fn create_next_line(line: String) -> String {
     let mut prev_number = line.chars().next().unwrap().clone();
     let mut counter = 1;
 
-    println!("\n{}", line);
     for (i, number) in line.chars().enumerate().skip(1) {
         if number == prev_number {
             counter += 1;
         } else {
-            println!("{} times {}", counter, prev_number);
-            next_line.push(char::from_digit(counter, 10).unwrap());
-            next_line.push(prev_number);
+            next_line = format!("{}{}{}", next_line, counter, prev_number);
             counter = 1;
         }
         prev_number = number.clone();
-        next_line.push(number);
     }
-    println!("{} times {}", counter, prev_number);
-    next_line.push(char::from_digit(counter, 10).unwrap());
-    next_line.push(prev_number);
-
+    next_line = format!("{}{}{}", next_line, counter, prev_number);
     next_line
 }
 
@@ -68,6 +65,10 @@ mod tests {
             String::from("11")
         );
         assert_eq!(
+            create_next_line(String::from("12")),
+            String::from("1112")
+        );
+        assert_eq!(
             create_next_line(String::from("333122")),
             String::from("331122")
         );
@@ -78,6 +79,14 @@ mod tests {
         assert_eq!(
             create_next_line(String::from("321")),
             String::from("131211")
+        );
+        assert_eq!(
+            create_next_line(String::from("000000000")),
+            String::from("90")
+        );
+        assert_eq!(
+            create_next_line(String::from("0000000000")),
+            String::from("100")
         );
     }
 }
