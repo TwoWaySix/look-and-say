@@ -1,4 +1,4 @@
-# look-and-say command line tool
+# A Look-And-Say Command Line Tool
 A command line tool written in Rust that solves the **Look-and-say sequence** with any given starting number.
 
     Description on Wikipedia 
